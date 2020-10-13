@@ -3,6 +3,16 @@
 # Author: ad26kt
 # mail: ad26kt@gmail.com
 # Created Time: Mon 09 Oct 2017 05:07:43 PM KST
+
+# To trian the model:
+# bash run.sh train [data_name] [hyperparameters] [epochs]
+# example : bash run.sh train squad basic_params 10
+
+# To test the model:
+# mkdir result ## only for the first time, predicted result will be saved here
+# bash run.sh pred [data_name] [hyperparameters] 0 
+# example : bash run.sh pred squad basic_params 0 
+
 #########################################################################
 #!/bin/bash
 train(){
