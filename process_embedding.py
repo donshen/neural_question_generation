@@ -1,6 +1,7 @@
 import numpy as np
 import pickle as pkl
 import os
+from tqdm import tqdm
 
 # Load & process GloVe
 data_dir = 'data/'
@@ -8,16 +9,16 @@ glove = 'glove.840B.300d'
 
 if not os.path.exists(data_dir + 'processed/' + glove + '.dic.npy'):
     print ('Reading original Glove file...')
-    f = open(data_dir + glove + '.txt')
-    lines = f.readlines()
-    f.close()
-
-    print ('Processing original Glove file to dictionary...\n')
     embedding = dict()
-    for line in lines:
-        splited = line.split()
-        embedding[splited[0]] = map(float, splited[1:])
+    with open(data_dir + glove + '.txt', 'r', encoding='utf-8') as f:
 
+    #print ('Processing original Glove file to dictionary...\n')
+
+        for i, line in tqdm(enumerate(f)):
+            values = line.split()
+            word = ''.join(values[:-300])
+            coefs = np.asarray(values[-300:], dtype='float32')
+            embedding[word] = coefs
     # Save Glove as dic file
     np.save(data_dir + 'processed/' + glove + '.dic.npy', embedding)
 
@@ -28,7 +29,7 @@ else:
 
 # Make pre-trianed embedding with GloVe
 print ('Generate pre-trained embedding with Glove')
-with open('data/processed/vocab_xinyadu.dic') as f:
+with open('data/processed/vocab_xinyadu.dic', 'rb') as f:
     vocab = pkl.load(f)
     
 embedding_vocab = np.tile(embedding['UNKNOWN'],[len(vocab),1])

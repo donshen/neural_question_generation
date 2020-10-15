@@ -17,16 +17,16 @@ def remove_eos(sentence, eos = '<EOS>', pad = '<PAD>'):
         return sentence + '\n'
 
 def write_result(predict_results, dic_dir):
-    print 'Load dic file...'
-    with open(dic_dir) as dic:
+    print ('Load dic file...')
+    with open(dic_dir, 'rb') as dic:
         dic_file = pkl.load(dic)
-    reversed_dic = dict((y,x) for x,y in dic_file.iteritems())
+    reversed_dic = dict((y,x) for x,y in dic_file.items())
     
-    print 'Writing into file...'
-    with open(FLAGS.pred_dir, 'w') as f:
+    print ('Writing into file...')
+    with open(FLAGS.pred_dir, 'wb') as f:
         while True:
             try : 
-                output = predict_results.next()
+                output = next(predict_results)
                 output = output['question'].tolist()
                 if -1 in output: # beam search
                     output = output[:output.index(-1)]
